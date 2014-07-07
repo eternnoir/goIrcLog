@@ -10,12 +10,9 @@ import(
 
 
 func createIrcBot(channel string){
-    c := client.CreateClient("chat.freenode.net","#CS_RDSS","goIrclog","goIrcLog")
+    c := client.CreateClient("chat.freenode.net","#","goIrclog","goIrcLog")
     c.Connect()
-    fmt.Println("YA")
 }
-
-
 
 func main() {
     createIrcBot("HI")
