@@ -1,7 +1,6 @@
 package main
 
 import(
-    "fmt"
     "./client"
 	//"crypto/tls"
 	//"testing"
