@@ -2,8 +2,8 @@ package Database
 
 import (
 	sqlite3 "code.google.com/p/go-sqlite/go1/sqlite3"
+	"fmt"
 	Model "goIrcLog/Model"
-    "fmt"
 )
 
 type SqlLiteDb struct {
@@ -18,21 +18,21 @@ func (db *SqlLiteDb) CheckTableExits() bool {
 	return false
 }
 func (db *SqlLiteDb) CreateTable() bool {
-    sqlStr :=
-    `
+	sqlStr :=
+	`
     create table if not exists LogMsg(Message TEXT,Nick TEXT,Channel TEXT,Time INTEGER)
     `
-    c:= getConn()
-    err := c.Exec(sqlStr)
-    if err != nil {
-        fmt.Println("Can not create table")
-    }
-    else{
-        return true
-    }
+	conn := db.getConn()
+	err := conn.Exec(sqlStr)
+	if err != nil {
+		fmt.Println("Can not create table")
+		return false
+	} else {
+		return true
+	}
 }
 
-func (db *SqlLiteDb) getConn() *sqlite3.Conn{
-    c, _ := sqlite3.Open(db.DbPath)
-    return c
+func (db *SqlLiteDb) getConn() *sqlite3.Conn {
+	c, _ := sqlite3.Open(db.DbPath)
+	return c
 }
