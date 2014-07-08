@@ -4,18 +4,19 @@ import (
 	"fmt"
 	ircenv "github.com/thoj/go-ircevent"
 	DB "goIrcLog/Database"
-    Model "goIrcLog/Model"
-    "time"
+	Model "goIrcLog/Model"
+	"time"
 )
 
 type ircClient struct {
-	channel, server,port, user, nickName string
-	connection                      *ircenv.Connection
-	db                              DB.DbProvider
+	server, port, user, nickName string
+	channels                     []string
+	connection                   *ircenv.Connection
+	db                           DB.DbProvider
 }
 
 func (c *ircClient) Connect() bool {
-    serverStr := c.server +":"+ c.port
+	serverStr := c.server + ":" + c.port
 	fmt.Println(serverStr)
 	err := c.connection.Connect(serverStr)
 	if err != nil {
@@ -27,31 +28,33 @@ func (c *ircClient) Connect() bool {
 }
 
 func (c *ircClient) setUpCallbacks() {
-	c.connection.AddCallback("001", func(e *ircenv.Event) {
-		c.Join()
-		fmt.Println("Joined" + c.channel)
-	})
-	c.connection.AddCallback("PRIVMSG", func(e *ircenv.Event) {
+    c.connection.AddCallback("001", func(e *ircenv.Event) {
+        for _, ch := range c.channels{
+            c.Join(ch)
+        }
+    })
+    c.connection.AddCallback("PRIVMSG", func(e *ircenv.Event) {
 		c.ReceivedMag(e)
-        fmt.Println("PRIVMSG Channel:"+ e.Arguments[0]+" " + e.Nick + ": " + e.Message())
+		fmt.Println("PRIVMSG Channel:" + e.Arguments[0] + " " + e.Nick + ": " + e.Message())
 	})
 	c.connection.AddCallback("PUBMSG", func(e *ircenv.Event) {
 		// TODO Not Yet
 	})
 }
 
-func (c *ircClient) Join() {
-	c.connection.Join(c.channel)
+func (c *ircClient) Join(channel string) {
+    c.connection.Join(channel)
+    fmt.Println("Joined" + channel)
 }
 
 func (c *ircClient) ReceivedMag(e *ircenv.Event) {
-    go c.SaveMag(e)
+	go c.SaveMag(e)
 }
 func (c *ircClient) SaveMag(e *ircenv.Event) {
 	msg := &Model.Message{}
-    msg.Message = e.Message()
-    msg.Channel = e.Arguments[0]
-    msg.Nick = e.Nick
-    msg.Time = time.Now().Local()
-    c.db.SaveMessage(msg)
+	msg.Message = e.Message()
+	msg.Channel = e.Arguments[0]
+	msg.Nick = e.Nick
+	msg.Time = time.Now().Local()
+	c.db.SaveMessage(msg)
 }

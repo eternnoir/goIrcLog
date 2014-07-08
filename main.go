@@ -6,6 +6,7 @@ import (
 	client "goIrcLog/client"
 	"strconv"
 	"time"
+    "os"
 )
 
 func createIrcBot(configPath string) {
@@ -18,7 +19,12 @@ func createIrcBot(configPath string) {
 }
 
 func main() {
-	createIrcBot("./config.json")
+    args := os.Args
+    if len(args) !=2 {
+        fmt.Println("Show Help")
+        return
+    }
+	createIrcBot(args[1])
 	for {
 		time.Sleep(30)
 	}

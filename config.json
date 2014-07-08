@@ -3,7 +3,7 @@
     {
         "DbType": "Sqlite",
         "DbConnection": "./test.db",
-        "Channels": "#RDSS_ORM",
+        "Channels": "#goIrcLog",
         "User": "logBotUser",
         "Password": "logBotPwd",
         "Nick": "logBotP",
