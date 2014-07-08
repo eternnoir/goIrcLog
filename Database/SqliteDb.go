@@ -12,7 +12,6 @@ type SqlLiteDb struct {
 
 func NewSqliteDb (DbPath string) *SqlLiteDb{
     ret := &SqlLiteDb{DbPath:DbPath}
-    ret.CreateTable()
     return ret
 }
 

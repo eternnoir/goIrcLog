@@ -1,0 +1,14 @@
+{
+    "Configs": [
+    {
+        "DbType": "Sqlite",
+        "DbConnection": "./test.db",
+        "Channels": "#RDSS_ORM",
+        "User": "logBotUser",
+        "Password": "logBotPwd",
+        "Nick": "logBotP",
+        "Server": "chat.freenode.net",
+        "Port": "6667"
+    }
+    ]
+}

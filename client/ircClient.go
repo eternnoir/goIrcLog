@@ -9,21 +9,13 @@ import (
 )
 
 type ircClient struct {
-	channel, server, user, nickName string
+	channel, server,port, user, nickName string
 	connection                      *ircenv.Connection
 	db                              DB.DbProvider
 }
 
-func CreateClient(server, channel, user, nickName string,Db DB.DbProvider) *ircClient {
-	ret := &ircClient{channel: channel, server: server, user: user, nickName: nickName}
-	ret.connection = ircenv.IRC(ret.nickName, ret.user)
-    ret.db = Db
-
-	return ret
-}
-
 func (c *ircClient) Connect() bool {
-	serverStr := c.server + ":6667"
+    serverStr := c.server +":"+ c.port
 	fmt.Println(serverStr)
 	err := c.connection.Connect(serverStr)
 	if err != nil {

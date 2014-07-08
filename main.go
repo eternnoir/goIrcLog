@@ -1,18 +1,25 @@
 package main
 
-import(
-    "./client"
-	//"crypto/tls"
-	//"testing"
-	//"time"
+import (
+	"fmt"
+	config "goIrcLog/Config"
+	client "goIrcLog/client"
+	"strconv"
+	"time"
 )
 
-
-func createIrcBot(channel string){
-    c := client.CreateClient("chat.freenode.net","#","goIrclog","goIrcLog")
-    c.Connect()
+func createIrcBot(configPath string) {
+	c := config.GetConfigslice(configPath)
+	fmt.Println("Scaned " + strconv.Itoa(len(c.Configs)) + " client configs")
+	for _, c := range c.Configs {
+		bot := client.GetNewClient(&c)
+		go bot.Connect()
+	}
 }
 
 func main() {
-    createIrcBot("HI")
+	createIrcBot("./config.json")
+	for {
+		time.Sleep(30)
+	}
 }
