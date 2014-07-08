@@ -12,5 +12,9 @@ RUN go get code.google.com/p/go-sqlite/go1/sqlite3
 ADD . /gopath/src/goIrcLog
 WORKDIR /gopath/src/goIrcLog
 RUN go build
-CMD ["./goIrcLog","./config.json"]
+
+VOLUME ["/config"]
+VOLUME ["/db"]
+
+CMD ["./goIrcLog","/config/config.json"]
 
