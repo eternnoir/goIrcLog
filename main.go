@@ -26,6 +26,6 @@ func main() {
     }
 	createIrcBot(args[1])
 	for {
-		time.Sleep(30)
+		time.Sleep(30*time.Second)
 	}
 }
