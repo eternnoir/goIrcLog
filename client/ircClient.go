@@ -31,6 +31,7 @@ func (c *ircClient) setUpCallbacks() {
     c.connection.AddCallback("001", func(e *ircenv.Event) {
         for _, ch := range c.channels{
             c.Join(ch)
+            time.Sleep(1*time.Second)
         }
     })
     c.connection.AddCallback("PRIVMSG", func(e *ircenv.Event) {
