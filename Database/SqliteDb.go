@@ -10,12 +10,31 @@ type SqlLiteDb struct {
 	DbPath string
 }
 
+func NewSqliteDb (DbPath string) *SqlLiteDb{
+    ret := &SqlLiteDb{DbPath:DbPath}
+    ret.CreateTable()
+    return ret
+}
+
 func (db *SqlLiteDb) SaveMessage(msg *Model.Message) bool {
-	return false
+    args:= sqlite3.NamedArgs{"$Message": msg.Message,"$Nick":msg.Nick,
+    "$Channel":msg.Channel,"$Time":msg.Time}
+    sqlStr :=
+	`
+    INSERT INTO LogMsg VALUES($Message, $Nick, $Channel,$Time)
+    `
+	conn := db.getConn()
+	err := conn.Exec(sqlStr,args)
+	if err != nil {
+		fmt.Println("Can not create table")
+		return false
+	} else {
+		return true
+	}
 }
 
 func (db *SqlLiteDb) CheckTableExits() bool {
-	return false
+    return false
 }
 func (db *SqlLiteDb) CreateTable() bool {
 	sqlStr :=
