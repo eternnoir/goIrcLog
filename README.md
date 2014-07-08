@@ -1,7 +1,7 @@
 goIrcLog
 ========
 
-An Irc log bot, it can save channel massage to database(only support sqlite now). 
+An Irc log bot, it can save channel's massage to database(only support sqlite now). 
 
 ## Build
 
