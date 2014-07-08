@@ -56,5 +56,6 @@ func (c *ircClient) SaveMag(e *ircenv.Event) {
 	msg.Channel = e.Arguments[0]
 	msg.Nick = e.Nick
 	msg.Time = time.Now().Local()
+    msg.Server = c.server
 	c.db.SaveMessage(msg)
 }

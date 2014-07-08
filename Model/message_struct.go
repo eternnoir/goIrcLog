@@ -5,6 +5,6 @@ import (
 )
 
 type Message struct {
-	Message, Nick,Channel string
+	Message, Nick,Channel,Server string
 	Time time.Time
 }
