@@ -17,10 +17,10 @@ func NewSqliteDb (DbPath string) *SqlLiteDb{
 
 func (db *SqlLiteDb) SaveMessage(msg *Model.Message) bool {
     args:= sqlite3.NamedArgs{"$Message": msg.Message,"$Nick":msg.Nick,
-    "$Channel":msg.Channel,"$Time":msg.Time}
+    "$Channel":msg.Channel,"$Time":msg.Time,"$Server":msg.Server}
     sqlStr :=
 	`
-    INSERT INTO LogMsg VALUES($Message, $Nick, $Channel,$Time)
+    INSERT INTO LogMsg VALUES($Message, $Nick, $Channel,$Time,$Server)
     `
 	conn := db.getConn()
 	err := conn.Exec(sqlStr,args)
@@ -38,7 +38,7 @@ func (db *SqlLiteDb) CheckTableExits() bool {
 func (db *SqlLiteDb) CreateTable() bool {
 	sqlStr :=
 	`
-    create table if not exists LogMsg(Message TEXT,Nick TEXT,Channel TEXT,Time INTEGER)
+    create table if not exists LogMsg(Message TEXT,Nick TEXT,Channel TEXT,Time INTEGER,Server TEXT)
     `
 	conn := db.getConn()
 	err := conn.Exec(sqlStr)
